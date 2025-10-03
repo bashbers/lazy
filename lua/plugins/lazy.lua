@@ -95,7 +95,7 @@ require("lazy").setup({
           ['<C-b>'] = cmp_action.luasnip_jump_backward(),
         }),
         snippet = {
-          expand = function(args)
+        expand = function(args)
             require('luasnip').lsp_expand(args.body)
           end,
         },
@@ -126,7 +126,7 @@ require("lazy").setup({
       end)
 
       require('mason-lspconfig').setup({
-        ensure_installed = {},
+        ensure_installed = {'pylsp'},
         handlers = {
           -- this first function is the "default handler"
           -- it applies to every language server without a "custom handler"
