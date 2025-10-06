@@ -46,3 +46,17 @@ vim.api.nvim_create_autocmd("BufReadPost", {
       end
     end
 }) -- return to last edit position when opening files
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  callback = function(args)
+    require("conform").format({ bufnr = args.buf })
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*",
+  command = "setlocal colorcolumn=120",
+})
+
+vim.lsp.enable("pyright")
