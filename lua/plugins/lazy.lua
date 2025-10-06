@@ -24,6 +24,13 @@ vim.g.maplocalleader = "\\"
 -- Setup lazy.nvim
 require("lazy").setup({
 	-- theme
+  { "sainnhe/everforest",
+        config = function()
+            vim.opt.termguicolors = true
+            vim.g.everforest_background = "hard"
+            vim.g.everforest_disable_italic_comment = true
+            -- vim.cmd.colorscheme("everforest")
+        end },
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 	{
 		"tiagovla/tokyodark.nvim",
@@ -189,4 +196,16 @@ require("lazy").setup({
 		config = true,
 	},
 	{ "lukas-reineke/virt-column.nvim", opts = {} },
+	{
+		"nvim-treesitter/nvim-treesitter",
+		branch = "master",
+		lazy = false,
+		build = ":TSUpdate",
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				ensure_installed = { "python", "lua", "yaml" },
+				highlight = { enable = true },
+			})
+		end,
+	},
 })
