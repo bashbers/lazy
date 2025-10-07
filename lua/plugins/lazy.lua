@@ -24,13 +24,15 @@ vim.g.maplocalleader = "\\"
 -- Setup lazy.nvim
 require("lazy").setup({
 	-- theme
-  { "sainnhe/everforest",
-        config = function()
-            vim.opt.termguicolors = true
-            vim.g.everforest_background = "hard"
-            vim.g.everforest_disable_italic_comment = true
-            -- vim.cmd.colorscheme("everforest")
-        end },
+	{
+		"sainnhe/everforest",
+		config = function()
+			vim.opt.termguicolors = true
+			vim.g.everforest_background = "hard"
+			vim.g.everforest_disable_italic_comment = true
+			-- vim.cmd.colorscheme("everforest")
+		end,
+	},
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 	{
 		"tiagovla/tokyodark.nvim",
@@ -134,7 +136,6 @@ require("lazy").setup({
 				-- This is where all the LSP shenanigans will live
 				local lsp_zero = require("lsp-zero")
 				lsp_zero.extend_lspconfig()
-
 				-- if you want to know more about mason.nvim
 				-- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
 				lsp_zero.on_attach(function(client, bufnr)
@@ -142,7 +143,6 @@ require("lazy").setup({
 					-- to learn the available actions
 					lsp_zero.default_keymaps({ buffer = bufnr })
 				end)
-
 				require("mason-lspconfig").setup({
 					handlers = {
 						-- this first function is the "default handler"
@@ -155,6 +155,17 @@ require("lazy").setup({
 							-- (Optional) Configure lua language server for neovim
 							local lua_opts = lsp_zero.nvim_lua_ls()
 							require("lspconfig").lua_ls.setup(lua_opts)
+						end,
+						pyright = function()
+							require("lspconfig").pyright.setup({
+								settings = {
+									python = {
+										analysis = {
+											reportPossiblyUnboundVariable = false,
+										},
+									},
+								},
+							})
 						end,
 					},
 				})
@@ -177,17 +188,19 @@ require("lazy").setup({
 	{ "akinsho/toggleterm.nvim", version = "*", config = true },
 	{
 		"stevearc/conform.nvim",
-		formatters_by_ft = {
-			lua = { "stylua" },
-			-- Conform will run multiple formatters sequentially
-			python = { "ruff_fix", "ruff_format" },
-			-- Conform will run the first available formatter
-			javascript = { "prettierd", "prettier", stop_after_first = true },
-		},
-		format_on_save = {
-			-- I recommend these options. See :help conform.format for details.
-			lsp_format = "fallback",
-			timeout_ms = 500,
+		opts = {
+			formatters_by_ft = {
+				lua = { "stylua" },
+				-- Conform will run multiple formatters sequentially
+				python = { "ruff_fix", "ruff_format" },
+				-- Conform will run the first available formatter
+				javascript = { "prettierd", "prettier", stop_after_first = true },
+			},
+			format_on_save = {
+				-- I recommend these options. See :help conform.format for details.
+				lsp_format = "fallback",
+				timeout_ms = 500,
+			},
 		},
 	},
 	{
@@ -207,5 +220,16 @@ require("lazy").setup({
 				highlight = { enable = true },
 			})
 		end,
+	},
+	{
+		"ThePrimeagen/refactoring.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+		},
+		opts = {
+			show_success_message = true, -- shows a message with information about the refactor on success
+		},
 	},
 })

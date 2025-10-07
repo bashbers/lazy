@@ -11,3 +11,4 @@ vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
 
 vim.keymap.set("n", "gD", ":lua vim.lsp.buf.declaration()<CR>")
 vim.keymap.set("n", "gd", ":lua vim.lsp.buf.definition()<CR>")
+vim.keymap.set("n", "gi", ":lua vim.lsp.buf.implementation()<CR>")
